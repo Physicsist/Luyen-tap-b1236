@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vật lí 10 - Luyện thuộc lý thuyết</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-quote {
+      border-left: 3.5px solid #be123c;
+    }
+    .quiz-option {
+      transition: all 0.15s ease-in-out;
+    }
+    .quiz-option:hover:not(:disabled) {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+    }
+    .quiz-option:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- Header thanh công cụ trên cùng -->
+  <header class="w-full bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 py-2 text-xs text-slate-500 flex justify-between items-center shadow-xs">
+    <div class="flex items-center gap-2">
+      <span class="font-medium text-slate-800">Vật lí 10 Luyện Thuộc</span>
+      <span class="text-slate-300">•</span>
+      <span class="hidden sm:inline">Ôn tập chuẩn KNTT (Bài 1, 2, 3, 6)</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="exportProgressReport()" class="text-rose-700 hover:text-rose-800 font-semibold flex items-center gap-1 cursor-pointer">
+        <span>📋 Báo cáo nộp bài</span>
+      </button>
+      <button onclick="resetAllProgress()" class="text-slate-400 hover:text-rose-600 transition cursor-pointer">Đặt lại dữ liệu</button>
+    </div>
+  </header>
+
+  <!-- KHUNG NỘI DUNG CHÍNH -->
+  <main class="max-w-2xl mx-auto px-4 pt-6">
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: TRANG CHỦ DANH SÁCH ĐỀ (DASHBOARD) -->
+    <!-- ========================================== -->
+    <section id="view-dashboard" class="space-y-6">
+      
+      <!-- Tiêu đề lớn -->
+      <div>
+        <p class="text-[11px] font-semibold tracking-wider uppercase text-slate-400 mb-1">VẬT LÍ 10 · KẾT NỐI TRI THỨC · GIỮA KÌ</p>
+        <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Luyện thuộc lý thuyết</h1>
+        <p class="text-[13px] text-slate-600 mt-2 leading-relaxed">
+          Mỗi đề chia 4 cấp: từ <span class="font-medium text-slate-800">cực dễ (5 điểm)</span> đến <span class="font-medium text-slate-800">vận dụng (9 – 10 điểm)</span>. Làm lại nhiều lần. Một câu được tính là thuộc khi em trả lời đúng <span class="font-semibold text-rose-700">3 lần liên tiếp</span>, câu nào cần luyện thêm sẽ quay lại để em ghi nhớ chắc hơn. Kiến thức toàn diện từ <span class="font-semibold text-slate-800">Bài 1, 2, 3 đến Bài 6</span>.
+        </p>
+      </div>
+
+      <!-- Slogan viền hồng đỏ như ảnh mẫu -->
+      <div class="custom-quote bg-white pl-4 py-2.5 pr-3 rounded-r-md text-[13px] font-medium text-slate-700 shadow-xs">
+        Hãy học để trở thành người mà chính em tự hào.
+      </div>
+
+      <!-- Mục tiêu & Ước mơ -->
+      <div class="bg-white rounded-xl p-5 border border-slate-200/90 shadow-xs space-y-4">
+        <h2 class="text-sm font-bold text-slate-800">Mục tiêu và ước mơ của em</h2>
+
+        <div>
+          <label class="block text-xs text-slate-500 mb-1.5 font-medium">Em muốn đạt mức điểm nào ở bài kiểm tra giữa kì?</label>
+          <select id="user-target-score" onchange="saveUserProfile()" class="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition">
+            <option value="">Chọn mục tiêu của em</option>
+            <option value="10">Chinh phục 10 điểm tuyệt đối</option>
+            <option value="9">Chinh phục 9.0 - 9.5 điểm</option>
+            <option value="8">Nắm chắc 8.0 - 8.5 điểm</option>
+            <option value="7">Nắm vững 7.0 điểm căn bản</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-500 mb-1.5 font-medium">Em học để trở thành người như thế nào, hoặc để làm được điều gì cho mình và cho gia đình?</label>
+          <textarea id="user-dream" onchange="saveUserProfile()" rows="2" placeholder="Ví dụ: Em muốn trở thành kĩ sư / bác sĩ để giúp mọi người khoẻ mạnh, hạnh phúc hơn..." class="w-full text-xs text-slate-700 border border-slate-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition resize-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Họ tên học sinh -->
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-xs">
+        <label class="block text-xs text-slate-500 mb-1.5 font-medium">Tên em (để giáo viên nhận ra bài nộp)</label>
+        <input type="text" id="user-name" onchange="saveUserProfile()" placeholder="Ví dụ: Nguyễn Văn A - 10A1" class="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition">
+      </div>
+
+      <!-- Thanh tiến độ tổng quan toàn khóa -->
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-xs space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <span id="total-mastered-text" class="font-medium text-slate-700">0 / 0 câu đã thuộc</span>
+          <span id="total-percent-text" class="font-semibold text-rose-700">0%</span>
+        </div>
+        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+          <div id="total-progress-bar" class="bg-rose-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <p class="text-[11px] text-slate-400 italic" id="total-progress-sub">Hôm nay bắt đầu từ một câu đầu tiên nhé.</p>
+      </div>
+
+      <!-- Danh sách các Đề -->
+      <div class="space-y-3" id="exams-list">
+        <!-- JS render -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: CHI TIẾT ĐỀ & 4 CẤP ĐỘ (EXAM VIEW) -->
+    <!-- ========================================== -->
+    <section id="view-exam" class="hidden space-y-5">
+      <!-- Nút quay lại -->
+      <button onclick="goToDashboard()" class="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1.5 py-1 font-medium cursor-pointer transition">
+        <span>← Các đề</span>
+      </button>
+
+      <!-- Tiêu đề đề thi -->
+      <div>
+        <p id="exam-detail-subtitle" class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">BÀI 1</p>
+        <h2 id="exam-detail-title" class="text-xl font-bold text-slate-900">Đề 1</h2>
+        <p id="exam-detail-desc" class="text-xs text-slate-500 mt-0.5">Mô tả chủ đề ôn tập</p>
+      </div>
+
+      <!-- Tiến độ riêng của Đề -->
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-xs space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <span id="exam-mastered-text" class="font-medium text-slate-700">0 / 0 câu của đề đã thuộc</span>
+          <span id="exam-percent-text" class="font-semibold text-rose-700">0%</span>
+        </div>
+        <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+          <div id="exam-progress-bar" class="bg-rose-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <p class="text-[11px] text-slate-400">Nên đi từ Cấp 1 lên dần. Chắc Cấp 1 là em đã nắm được phần lấy 5 điểm.</p>
+      </div>
+
+      <!-- Khung 4 Cấp Độ -->
+      <div class="space-y-3" id="levels-container">
+        <!-- JS render 4 cấp độ -->
+      </div>
+
+      <!-- Tóm tắt bài giảng của đề (Collapse) -->
+      <div class="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
+        <button onclick="toggleTheorySummary()" class="w-full px-4 py-3 text-left font-medium text-xs text-slate-700 hover:bg-slate-50 flex justify-between items-center transition cursor-pointer">
+          <span class="flex items-center gap-2">
+            <span>📖</span>
+            <span class="font-semibold text-slate-800">Bài giảng & Tóm tắt trọng tâm của đề</span>
+          </span>
+          <span id="theory-chevron" class="text-slate-400 text-xs">Xem thêm ▼</span>
+        </button>
+        <div id="theory-content" class="hidden px-5 py-4 border-t border-slate-100 text-xs text-slate-600 leading-relaxed bg-slate-50/50 space-y-2.5">
+          <!-- JS render tóm tắt -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: LUYỆN TẬP VÀ ĐẢO ĐÁP ÁN (QUIZ VIEW)-->
+    <!-- ========================================== -->
+    <section id="view-quiz" class="hidden space-y-5">
+      <!-- Điều hướng thanh trên của Quiz -->
+      <div class="flex items-center justify-between">
+        <button onclick="exitQuiz()" class="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium cursor-pointer transition">
+          <span>← Tạm dừng / Quay lại</span>
+        </button>
+        <div class="text-center">
+          <span id="quiz-header-badge" class="inline-block bg-slate-100 text-slate-700 font-semibold px-2.5 py-0.5 rounded-full text-[11px]">
+            Cấp 1 • Câu 1/10
+          </span>
+        </div>
+        <div class="text-[11px] font-medium text-slate-400 flex items-center gap-1">
+          <span>Đảo đáp án</span>
+          <span class="text-emerald-600 font-bold">✓</span>
+        </div>
+      </div>
+
+      <!-- Card hiển thị câu hỏi và đáp án -->
+      <div class="bg-white rounded-xl border border-slate-200/90 p-5 shadow-xs space-y-4">
+        
+        <!-- Hàng hiển thị mức thuộc (3 chấm tròn) -->
+        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2 text-xs text-slate-500">
+            <span>Độ thuộc:</span>
+            <div id="quiz-streak-dots" class="flex gap-1.5 items-center">
+              <!-- JS render 3 chấm tròn -->
+            </div>
+          </div>
+          <span id="quiz-status-pill" class="text-[11px] font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded">
+            Cần đúng 3 lần liên tiếp
+          </span>
+        </div>
+
+        <!-- Nội dung câu hỏi -->
+        <div class="pt-1">
+          <h3 id="quiz-question-text" class="text-sm font-semibold text-slate-900 leading-relaxed">
+            Câu hỏi mẫu?
+          </h3>
+        </div>
+
+        <!-- Khung danh sách các lựa chọn -->
+        <div id="quiz-options-container" class="space-y-2.5 pt-1">
+          <!-- JS render A, B, C, D đã được shuffle -->
+        </div>
+
+        <!-- Khung phản hồi sau khi trả lời -->
+        <div id="quiz-feedback" class="hidden pt-3 border-t border-slate-100 space-y-3">
+          <div id="quiz-feedback-banner" class="p-3.5 rounded-lg text-xs leading-relaxed">
+            <!-- Nội dung giải thích -->
+          </div>
+          <button id="quiz-next-btn" onclick="nextQuestion()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold transition active:scale-[0.99] flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>Câu tiếp theo</span>
+            <span>→</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: MODAL BÁO CÁO TIẾN ĐỘ / NỘP BÀI    -->
+    <!-- ========================================== -->
+    <div id="report-modal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl border border-slate-100 text-slate-800">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+          <h3 class="text-sm font-bold text-slate-900">Báo Cáo Học Tập & Nộp Bài</h3>
+          <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 text-lg leading-none cursor-pointer">&times;</button>
+        </div>
+        <div id="report-modal-content" class="text-xs space-y-2 text-slate-600 max-h-80 overflow-y-auto">
+          <!-- Nội dung báo cáo -->
+        </div>
+        <div class="pt-2 flex gap-2">
+          <button onclick="copyReportText()" class="flex-1 py-2.5 bg-rose-700 hover:bg-rose-800 text-white font-medium rounded-lg text-xs transition cursor-pointer">
+            Sao chép gửi Thầy / Cô
+          </button>
+          <button onclick="closeReportModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium cursor-pointer">
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    /* =====================================================================
+       ÂM THANH PHẢN HỒI (WEB AUDIO API - KHÔNG PHỤ THUỘC MẠNG NGOÀI)
+       ===================================================================== */
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSound(type) {
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'correct') {
+          // Chuỗi âm ấm áp khi đúng
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, now); // C5
+          osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.08); // E5
+          osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.16); // G5
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        } else if (type === 'wrong') {
+          // Âm trầm báo sai
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.15);
+          gain.gain.setValueAtTime(0.13, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else if (type === 'mastered') {
+          // Chuông hoàn thành 3/3 lần đúng
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.2);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+          osc.start(now);
+          osc.stop(now + 0.4);
+        }
+      } catch (e) {
+        console.warn("Audio not initialized:", e);
+      }
+    }
+
+    /* =====================================================================
+       HỆ THỐNG DỮ LIỆU ĐỀ VẬT LÍ 10 (BÀI 1, BÀI 2, BÀI 3 VÀ BÀI 6)
+       ===================================================================== */
+    const DATA_EXAMS = [
+      {
+        id: "bai-1",
+        code: "Đề 1",
+        lesson: "BÀI 1",
+        title: "Làm quen với Vật lí",
+        desc: "Đối tượng nghiên cứu, phương pháp thực nghiệm và mô hình lí thuyết",
+        summaryHtml: `
+          <p><strong>1. Đối tượng & mục tiêu:</strong> Vật lí nghiên cứu tập trung vào các dạng vận động của <em>VẬT CHẤT (chất, trường) và NĂNG LƯỢNG</em> ở cấp độ vi mô (nhỏ bé: nguyên tử, hạt nhân) và vĩ mô (rộng lớn: thiên hà, hệ Mặt Trời).</p>
+          <p><strong>2. Ba giai đoạn phát triển:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li><em>Tiền Vật lí (350 TCN - TK XVI):</em> Quan sát và suy luận chủ quan (Aristotle sai lầm khi cho rằng vật nặng rơi nhanh hơn vật nhẹ).</li>
+            <li><em>Vật lí cổ điển (TK XVII - cuối TK XIX):</em> Dùng <strong>phương pháp thực nghiệm</strong> (Galilei - cha đẻ phương pháp thực nghiệm; Newton công bố các nguyên lí toán năm 1687; Joule; Faraday phát hiện cảm ứng điện từ năm 1831).</li>
+            <li><em>Vật lí hiện đại (cuối TK XIX - nay):</em> Dùng mô hình lí thuyết tìm hiểu thế giới vi mô và kiểm chứng bằng thực nghiệm (Planck 1900, Einstein 1905, vi mạch IC 1958).</li>
+          </ul>
+          <p><strong>3. Phương pháp nghiên cứu:</strong> Phương pháp thực nghiệm và phương pháp mô hình (mô hình vật chất, mô hình lí thuyết, mô hình toán học) bổ trợ cho nhau; trong đó phương pháp thực nghiệm có tính quyết định.</p>
+        `,
+        levels: [
+          {
+            levelIndex: 1,
+            name: "Cấp 1 · Chinh phục 5 điểm",
+            desc: "Cực dễ: nhận biết, nhớ tên, nhớ tính chất cơ bản. Phần phương trình để dành cho cấp sau.",
+            target: 5,
+            questions: [
+              {
+                id: "b1_l1_q1",
+                q: "Đối tượng nghiên cứu trọng tâm của Vật lí học là gì?",
+                options: [
+                  "Các dạng vận động của vật chất (chất, trường) và năng lượng.",
+                  "Sự biến đổi chất và các phản ứng tạo ra chất mới.",
+                  "Quy luật sinh trưởng và tiến hóa của các loài sinh vật.",
+                  "Sự phân tầng và phát triển của các giai cấp trong xã hội."
+                ],
+                correct: 0,
+                explain: "Vật lí là môn khoa học tự nhiên nghiên cứu các dạng vận động của vật chất và năng lượng."
+              },
+              {
+                id: "b1_l1_q2",
+                q: "Cấp độ vi mô trong nghiên cứu vật chất là cấp độ dùng để:",
+                options: [
+                  "Mô phỏng vật chất có kích thước nhỏ bé như nguyên tử, phân tử, electron.",
+                  "Mô phỏng quy mô rất lớn của vật chất như hệ Mặt Trời, thiên hà.",
+                  "Mô phỏng các vật thể có kích thước trung bình xung quanh ta.",
+                  "Khảo sát địa chất và các tầng khoáng sản dưới lòng đất."
+                ],
+                correct: 0,
+                explain: "Cấp độ vi mô mô phỏng vật chất rất nhỏ bé (nguyên tử, hạt nhân...), còn vĩ mô mô phỏng tầm rộng lớn."
+              },
+              {
+                id: "b1_l1_q3",
+                q: "Ai được mệnh danh là 'Cha đẻ của phương pháp thực nghiệm' trong Vật lí học?",
+                options: [
+                  "Galileo Galilei (Ga-li-lê).",
+                  "Isaac Newton (Niu-tơn).",
+                  "Albert Einstein (Anh-xtanh).",
+                  "Aristotle (A-rít-xtốt)."
+                ],
+                correct: 0,
+                explain: "Năm 1600, Galilei làm thí nghiệm tại tháp nghiêng Pisa, khởi đầu cho phương pháp thực nghiệm khoa học."
+              },
+              {
+                id: "b1_l1_q4",
+                q: "Cuộc cách mạng công nghiệp lần thứ nhất (thế kỉ XVIII) có đặc trưng cơ bản là:",
+                options: [
+                  "Thay thế sức lực cơ bắp bằng sức lực máy móc (động cơ hơi nước).",
+                  "Sử dụng rộng rãi các thiết bị điện trong mọi lĩnh vực sản xuất.",
+                  "Tự động hóa hoàn toàn các quá trình sản xuất nhờ máy tính.",
+                  "Sử dụng trí tuệ nhân tạo (AI), robot và Internet vạn vật (IoT)."
+                ],
+                correct: 0,
+                explain: "Cách mạng công nghiệp lần 1 gắn liền với động cơ hơi nước của James Watt (1765)."
+              },
+              {
+                id: "b1_l1_q5",
+                q: "Hiện tượng cảm ứng điện từ được nhà vật lí Michael Faraday tìm ra vào năm nào?",
+                options: [
+                  "Năm 1831.",
+                  "Năm 1600.",
+                  "Năm 1687.",
+                  "Năm 1905."
+                ],
+                correct: 0,
+                explain: "Faraday tìm ra hiện tượng cảm ứng điện từ năm 1831, đặt nền tảng cho máy phát điện và cách mạng công nghiệp lần 2."
+              }
+            ]
+          },
+          {
+            levelIndex: 2,
+            name: "Cấp 2 · Chinh phục 6 – 7 điểm",
+            desc: "Dễ đến vừa: hiểu cấu tạo, tính chất, phân biệt đúng - sai. Em tập trung hiểu bản chất.",
+            target: 7,
+            questions: [
+              {
+                id: "b1_l2_q1",
+                q: "Nhận định nào sau đây thể hiện cách suy luận chủ quan của thời kì 'Tiền Vật lí'?",
+                options: [
+                  "Vật nặng bao giờ cũng rơi nhanh hơn vật nhẹ.",
+                  "Trong chân không, các vật có khối lượng khác nhau rơi nhanh như nhau.",
+                  "Khi không chịu lực tác dụng, vật giữ nguyên trạng thái đứng yên hoặc chuyển động thẳng đều.",
+                  "Ánh sáng vừa có tính chất sóng vừa có tính chất hạt."
+                ],
+                correct: 0,
+                explain: "Aristotle (350 TCN) chỉ dựa vào quan sát cảm tính mà kết luận sai lầm vật nặng rơi nhanh hơn vật nhẹ."
+              },
+              {
+                id: "b1_l2_q2",
+                q: "Quả địa cầu hay mô hình cấu tạo nguyên tử trong phòng thí nghiệm thuộc loại mô hình nào?",
+                options: [
+                  "Mô hình vật chất (mô hình thu nhỏ).",
+                  "Mô hình lí thuyết trừu tượng.",
+                  "Mô hình toán học.",
+                  "Phương pháp thực nghiệm kiểm chứng."
+                ],
+                correct: 0,
+                explain: "Quả địa cầu là vật thể thu nhỏ mô phỏng hình dạng Trái Đất, thuộc loại mô hình vật chất."
+              },
+              {
+                id: "b1_l2_q3",
+                q: "Khái niệm 'chất điểm', 'tia sáng' thường dùng trong Vật lí thuộc loại mô hình nào?",
+                options: [
+                  "Mô hình lí thuyết.",
+                  "Mô hình vật chất.",
+                  "Mô hình toán học.",
+                  "Mô hình thực nghiệm."
+                ],
+                correct: 0,
+                explain: "'Chất điểm' hay 'tia sáng' là mô hình lí thuyết giúp đơn giản hóa đối tượng nghiên cứu thực tế."
+              },
+              {
+                id: "b1_l2_q4",
+                q: "Thứ tự các bước chuẩn của PHƯƠNG PHÁP THỰC NGHIỆM trong nghiên cứu Vật lí là:",
+                options: [
+                  "Xác định vấn đề → Quan sát, thu thập thông tin → Đưa ra dự đoán → Thí nghiệm kiểm tra → Kết luận.",
+                  "Đưa ra dự đoán → Thí nghiệm kiểm tra → Quan sát → Xác định vấn đề → Kết luận.",
+                  "Quan sát → Thí nghiệm kiểm tra → Dự đoán → Bác bỏ giả thuyết → Kết luận.",
+                  "Xác định vấn đề → Thí nghiệm → Dự đoán → Quan sát → Kết luận."
+                ],
+                correct: 0,
+                explain: "Sơ đồ 5 bước: 1. Xác định vấn đề -> 2. Quan sát, thu thập thông tin -> 3. Đưa ra dự đoán -> 4. Thí nghiệm kiểm tra dự đoán -> 5. Kết luận."
+              }
+            ]
+          },
+          {
+            levelIndex: 3,
+            name: "Cấp 3 · Chinh phục 8 điểm",
+            desc: "Thông hiểu: giải thích hiện tượng đời sống bằng tri thức vật lí, vai trò công nghệ.",
+            target: 8,
+            questions: [
+              {
+                id: "b1_l3_q1",
+                q: "Hiện tượng đứng trên bờ nhìn xuống dòng suối trong vắt thấy đáy suối có vẻ nông hơn thực tế được giải thích bằng:",
+                options: [
+                  "Hiện tượng khúc xạ ánh sáng.",
+                  "Hiện tượng phản xạ toàn phần.",
+                  "Hiện tượng tán sắc ánh sáng.",
+                  "Hiện tượng nhiễu xạ sóng ánh sáng."
+                ],
+                correct: 0,
+                explain: "Tia sáng từ đáy suối truyền qua mặt phân cách giữa nước và không khí bị khúc xạ xa pháp tuyến, tạo ảnh ảo gần mặt nước hơn."
+              },
+              {
+                id: "b1_l3_q2",
+                q: "Tại sao trên đường ray xe lửa hoặc giữa các nhịp cầu thép luôn để một khe hở nhỏ?",
+                options: [
+                  "Để thanh ray có chỗ dãn nở vì nhiệt khi trời nắng nóng, tránh bị cong vênh trật bánh.",
+                  "Để nước mưa thoát nhanh chóng, hạn chế tối đa gỉ sét kim loại.",
+                  "Để giảm bớt tiếng ồn phát ra khi bánh tàu hoả chạy qua mối nối.",
+                  "Để công nhân dễ luồn dụng cụ khi bảo trì định kì."
+                ],
+                correct: 0,
+                explain: "Vật rắn nở ra khi nóng lên. Khe hở giúp kim loại dãn nở tự do mà không sinh ra lực uốn cong đường ray."
+              },
+              {
+                id: "b1_l3_q3",
+                q: "Tại sao không được cho các vật bằng kim loại (nhôm, inox...) vào trong lò vi sóng đang hoạt động?",
+                options: [
+                  "Kim loại phản xạ sóng vi ba tạo dòng điện xoáy cảm ứng gây phóng tia lửa điện, dễ nổ và hỏng lò.",
+                  "Kim loại hấp thụ hết sóng vi ba làm thức ăn bị biến đổi chất độc hại.",
+                  "Kim loại làm sóng vi ba chuyển hóa thành tia phóng xạ nguy hiểm.",
+                  "Kim loại làm ngắn mạch mạng điện gia đình gây nhảy cầu dao ngay."
+                ],
+                correct: 0,
+                explain: "Sóng vi ba tạo điện trường mạnh trên bề mặt kim loại dẫn tới phóng tia lửa điện nguy cơ cháy nổ lò."
+              }
+            ]
+          },
+          {
+            levelIndex: 4,
+            name: "Cấp 4 · Chinh phục 9 – 10 điểm",
+            desc: "Vận dụng: xây dựng tiến trình tìm hiểu hiện tượng thực nghiệm khoa học.",
+            target: 10,
+            questions: [
+              {
+                id: "b1_l4_q1",
+                q: "Để kiểm tra hiện tượng 'Nước nóng có thể đông đặc thành băng nhanh hơn nước lạnh' (Hiệu ứng Mpemba), biến số độc lập duy nhất được phép thay đổi là:",
+                options: [
+                  "Nhiệt độ ban đầu của hai cốc nước (các yếu tố: thể tích nước, loại cốc, vị trí tủ lạnh giữ nguyên).",
+                  "Lượng đường hòa tan trong cốc nước nóng so với cốc nước lạnh.",
+                  "Đặt cốc nước nóng ở ngăn đá còn cốc nước lạnh ở ngăn mát.",
+                  "Dùng một cốc nước khoáng so sánh với một cốc nước cất."
+                ],
+                correct: 0,
+                explain: "Theo nguyên tắc thực nghiệm công bằng (Fair test), chỉ có một biến độc lập duy nhất được thay đổi là nhiệt độ ban đầu của nước."
+              },
+              {
+                id: "b1_l4_q2",
+                q: "Trong các phát biểu sau về phương pháp nghiên cứu Vật lí, phát biểu nào sau đây là CHÍNH XÁC NHẤT?",
+                options: [
+                  "Phương pháp thực nghiệm và phương pháp mô hình luôn hỗ trợ cho nhau, trong đó thực nghiệm có tính quyết định.",
+                  "Phương pháp lí thuyết hoàn toàn độc lập và không bao giờ cần thực nghiệm kiểm chứng.",
+                  "Phương pháp thực nghiệm có thể giải quyết mọi bài toán vật lí mà không cần đến mô hình toán học.",
+                  "Mô hình lí thuyết luôn luôn đúng tuyệt đối và không cần điều chỉnh khi xuất hiện kết quả thực nghiệm mới."
+                ],
+                correct: 0,
+                explain: "Hai phương pháp luôn gắn bó hữu cơ; thực nghiệm là thước đo chân lí và có tính quyết định."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "bai-2",
+        code: "Đề 2",
+        lesson: "BÀI 2",
+        title: "Vấn đề an toàn trong phòng thực hành",
+        desc: "An toàn thiết bị điện, nhiệt, quang học, biển báo nguy hiểm và phóng xạ",
+        summaryHtml: `
+          <p><strong>1. An toàn khi dùng thiết bị điện:</strong> Kiểm tra kĩ dây dẫn, phích cắm; chỉ cắm thiết bị đúng hiệu điện thế định mức; tắt công tắc nguồn trước khi cắm hoặc tháo thiết bị; tuyệt đối không tiếp xúc với nguồn điện khi tay ướt.</p>
+          <p><strong>2. Nhận diện biển cảnh báo:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Tam giác vàng hình tia sét: <em>Nguy hiểm về điện</em>.</li>
+            <li>Hình tam giác vàng cánh quạt ba cánh (Trifoil): <em>Nơi có chất phóng xạ</em>.</li>
+            <li>Hình quả trám viền đỏ có ngọn lửa: <em>Vật liệu dễ cháy</em>.</li>
+            <li>Hình ống nghiệm đổ chất lỏng ăn mòn bề mặt: <em>Chất ăn mòn</em>.</li>
+            <li>Hình tam giác hình tia phát sáng: <em>Cảnh báo tia laser (không nhìn trực tiếp)</em>.</li>
+          </ul>
+          <p><strong>3. Quy tắc an toàn với phóng xạ:</strong> Giảm thời gian tiếp xúc; Tăng khoảng cách từ người đến nguồn; Đảm bảo che chắn các cơ quan trọng yếu của cơ thể (áo chì, kính bảo hộ).</p>
+        `,
+        levels: [
+          {
+            levelIndex: 1,
+            name: "Cấp 1 · Chinh phục 5 điểm",
+            desc: "Cực dễ: nhận biết quy tắc an toàn cơ bản và ý nghĩa các biển báo thông dụng.",
+            target: 5,
+            questions: [
+              {
+                id: "b2_l1_q1",
+                q: "Biển báo hình tam giác viền đen, nền vàng có hình vẽ tia sét cảnh báo điều gì?",
+                options: [
+                  "Nguy hiểm về điện (nguy cơ điện giật cao).",
+                  "Khu vực có tia phóng xạ nguy hiểm.",
+                  "Chất dễ cháy nổ.",
+                  "Cảnh báo chất độc hại môi trường."
+                ],
+                correct: 0,
+                explain: "Biểu tượng tia sét trong tam giác vàng là biển báo quốc tế cảnh báo nguy hiểm điện áp cao."
+              },
+              {
+                id: "b2_l1_q2",
+                q: "Biển báo hình quạt ba cánh tròn xoay (biểu tượng Trifoil) cảnh báo nguy cơ gì?",
+                options: [
+                  "Nơi có chất phóng xạ nguy hiểm.",
+                  "Khu vực quạt thông gió tốc độ cao.",
+                  "Nơi cấm dùng quạt điện.",
+                  "Khu vực chất ăn mòn kim loại."
+                ],
+                correct: 0,
+                explain: "Biểu tượng ba cánh quạt (Trifoil) là dấu hiệu cảnh báo bức xạ ion hóa và chất phóng xạ."
+              },
+              {
+                id: "b2_l1_q3",
+                q: "Hành động nào sau đây là KHÔNG AN TOÀN trong phòng thực hành Vật lí?",
+                options: [
+                  "Dùng tay ướt cắm phích cắm điện vào ổ điện nguồn.",
+                  "Tắt công tắc nguồn điện trước khi cắm hoặc tháo các linh kiện mạch điện.",
+                  "Đeo kính bảo hộ khi thực hiện thí nghiệm với nguồn nhiệt hoặc hoá chất.",
+                  "Bố trí dây dẫn điện gọn gàng, không để vướng đường đi lại."
+                ],
+                correct: 0,
+                explain: "Nước dẫn điện, tay ướt làm điện trở cơ thể giảm mạnh gây nguy cơ điện giật nguy hiểm tính mạng."
+              },
+              {
+                id: "b2_l1_q4",
+                q: "Khi làm thí nghiệm quang học có sử dụng nguồn phát tia laser, học sinh tuyệt đối KHÔNG được:",
+                options: [
+                  "Nhìn thẳng vào đầu phát tia laser hoặc chiếu tia laser vào mắt người khác.",
+                  "Chiếu tia laser qua thấu kính phân kì.",
+                  "Gắn nguồn laser cố định trên giá thí nghiệm.",
+                  "Tắt nguồn phát laser sau khi kết thúc buổi thực hành."
+                ],
+                correct: 0,
+                explain: "Chùm tia laser có mật độ năng lượng rất cao, chiếu vào mắt có thể làm cháy võng mạc và mù vĩnh viễn."
+              },
+              {
+                id: "b2_l1_q5",
+                q: "Quy tắc an toàn cơ bản nào sau đây áp dụng khi làm việc với nguồn phóng xạ?",
+                options: [
+                  "Giảm thời gian tiếp xúc, tăng khoảng cách tới nguồn và che chắn các cơ quan trọng yếu.",
+                  "Tăng tối đa thời gian tiếp xúc để quan sát chi tiết nhất.",
+                  "Đứng thật sát nguồn phát để giảm diện tích chùm tia chiếu tới.",
+                  "Chỉ cần mở cửa sổ thông gió mà không cần bất kì trang thiết bị bảo hộ nào."
+                ],
+                correct: 0,
+                explain: "Ba nguyên tắc vàng an toàn phóng xạ: Giảm thời gian - Tăng khoảng cách - Tăng cường che chắn (áo chì)."
+              }
+            ]
+          },
+          {
+            levelIndex: 2,
+            name: "Cấp 2 · Chinh phục 6 – 7 điểm",
+            desc: "Dễ đến vừa: hiểu rõ các nguy cơ chập cháy, hỏng đồng hồ đo điện đa năng.",
+            target: 7,
+            questions: [
+              {
+                id: "b2_l2_q1",
+                q: "Kí hiệu chữ 'DC' hoặc dấu '–' ghi trên nguồn điện hoặc thiết bị đo có ý nghĩa là:",
+                options: [
+                  "Dòng điện một chiều (Direct Current).",
+                  "Dòng điện xoay chiều (Alternating Current).",
+                  "Cực dương của nguồn điện.",
+                  "Dây nối đất an toàn."
+                ],
+                correct: 0,
+                explain: "DC (hoặc dấu -) là kí hiệu của dòng điện một chiều; AC (hoặc dấu ~) là dòng điện xoay chiều."
+              },
+              {
+                id: "b2_l2_q2",
+                q: "Để Ampe kế không bị cháy cuộn dây hoặc đứt cầu chì khi mắc vào mạch điện, người dùng phải:",
+                options: [
+                  "Chọn thang đo có giới hạn đo lớn hơn dòng điện dự kiến và mắc nối tiếp vào đoạn mạch cần đo.",
+                  "Mắc song song Ampe kế trực tiếp vào hai cực của nguồn điện.",
+                  "Luôn luôn chọn thang đo nhỏ nhất có thể.",
+                  "Cắm đồng thời cả hai que đo vào cổng AC xoay chiều."
+                ],
+                correct: 0,
+                explain: "Ampe kế có điện trở rất nhỏ, phải mắc nối tiếp và chọn thang đo lớn hơn dòng điện dự kiến để không bị quá tải."
+              },
+              {
+                id: "b2_l2_q3",
+                q: "Biển báo hình quả trám viền đỏ có biểu tượng ngọn lửa bùng cháy biểu thị cảnh báo gì?",
+                options: [
+                  "Vật liệu hoặc hóa chất dễ cháy.",
+                  "Nơi cho phép đốt lửa tùy thích.",
+                  "Nhiệt độ môi trường cực lạnh dưới 0°C.",
+                  "Chất khí trơ an toàn không cháy."
+                ],
+                correct: 0,
+                explain: "Biểu tượng ngọn lửa cảnh báo vật liệu dễ cháy, tuyệt đối tránh xa nguồn nhiệt và tia lửa điện."
+              },
+              {
+                id: "b2_l2_q4",
+                q: "Hiện tượng nào sau đây là nguyên nhân trực tiếp dẫn tới chập cháy mạch điện trong phòng thí nghiệm?",
+                options: [
+                  "Để hai đầu kẹp cá sấu mang điện chạm trực tiếp vào nhau hoặc để chất dễ cháy cạnh tia lửa điện.",
+                  "Bố trí dây dẫn gọn gàng trên giá thí nghiệm.",
+                  "Tắt công tắc nguồn điện trước khi cắm giắc nối.",
+                  "Mắc điện trở bảo vệ vào trước bóng đèn thí nghiệm."
+                ],
+                correct: 0,
+                explain: "Chạm trực tiếp hai đầu kẹp mang điện gây đoản mạch (ngắn mạch), dòng điện tăng vọt sinh nhiệt lớn gây chập cháy."
+              }
+            ]
+          },
+          {
+            levelIndex: 3,
+            name: "Cấp 3 · Chinh phục 8 điểm",
+            desc: "Thông hiểu: quy trình xử lí sự cố điện giật, ngắt nguồn, bảo vệ thiết bị.",
+            target: 8,
+            questions: [
+              {
+                id: "b2_l3_q1",
+                q: "Khi phát hiện bạn bị điện giật đang dính chặt vào dây dẫn trần, thao tác xử lí cứu hộ đúng nhất là:",
+                options: [
+                  "Lập tức ngắt cầu dao điện tổng hoặc dùng gậy gỗ khô/chổi nhựa gạt dây điện ra khỏi người nạn nhân.",
+                  "Lập tức dùng tay không nắm lấy tay bạn kéo thật mạnh ra.",
+                  "Dùng một thanh sắt đập đứt dây điện đang cháy.",
+                  "Dội ngay một xô nước lạnh vào nạn nhân để hạ nhiệt độ."
+                ],
+                correct: 0,
+                explain: "Phải ngắt cầu dao tổng ngay hoặc dùng vật liệu cách điện khô để tách nạn nhân, tuyệt đối không chạm tay trần vào người đang bị dính điện."
+              },
+              {
+                id: "b2_l3_q2",
+                q: "Tại sao vỏ kim loại của các thiết bị điện công suất lớn (máy biến áp, tủ lạnh) thường được nối đất (tiếp địa)?",
+                options: [
+                  "Dẫn dòng điện rò rỉ xuống đất, giữ điện thế vỏ máy xấp xỉ 0V để bảo vệ an toàn cho người chạm vào.",
+                  "Giúp máy hoạt động mạnh gấp đôi và tiết kiệm 50% điện năng.",
+                  "Làm tăng từ trường hoạt động bên trong động cơ thiết bị.",
+                  "Chống ẩm ướt và làm bóng đẹp vỏ kim loại."
+                ],
+                correct: 0,
+                explain: "Dây nối đất triệt tiêu điện thế rò rỉ trên vỏ máy xuống đất, tránh tai nạn điện giật khi chạm vào vỏ thiết bị."
+              },
+              {
+                id: "b2_l3_q3",
+                q: "Sau khi hoàn thành bài thực hành nhiệt học với đèn cồn, cách tắt đèn cồn an toàn và đúng quy cách nhất là:",
+                options: [
+                  "Dùng nắp chụp đèn đậy nhanh và dứt khoát vào ngọn lửa.",
+                  "Dùng miệng thổi thật mạnh vào ngọn lửa đèn cồn.",
+                  "Dội nước trực tiếp vào bấc đèn đang cháy.",
+                  "Dùng quạt tay phẩy cho ngọn lửa tự tắt."
+                ],
+                correct: 0,
+                explain: "Đậy nắp đèn cồn ngăn cản oxy làm ngọn lửa tắt an toàn; tuyệt đối không thổi vì hơi cồn bốc lên có thể bắt lửa phụt ngược vào trong bầu đèn."
+              }
+            ]
+          },
+          {
+            levelIndex: 4,
+            name: "Cấp 4 · Chinh phục 9 – 10 điểm",
+            desc: "Vận dụng: đánh giá nguy cơ quá tải đo lường và tình huống an toàn chuyên sâu.",
+            target: 10,
+            questions: [
+              {
+                id: "b2_l4_q1",
+                q: "Một học sinh dùng đồng hồ đo vạn năng số (DMM) để đo điện áp ổ cắm 220V AC nhưng cắm nhầm que đo đỏ vào lỗ '10A MAX' (lỗ đo dòng điện lớn). Chuyện gì sẽ xảy ra ngay khi cắm hai đầu que đo vào ổ điện?",
+                options: [
+                  "Gây ngắn mạch trực tiếp nguồn điện 220V qua thanh shunt có điện trở cực nhỏ, gây nổ que đo, cháy đồng hồ và nhảy aptomat tổng.",
+                  "Đồng hồ vẫn đo được 220V bình thường nhưng phát tiếng bíp cảnh báo.",
+                  "Không có dòng điện nào chạy qua vì lỗ cắm 10A có điện trở vô cùng lớn.",
+                  "Đồng hồ tự động bảo vệ thông minh và không xảy ra bất kì hiện tượng gì."
+                ],
+                correct: 0,
+                explain: "Lỗ cắm 10A có nội trở chỉ khoảng 0,01 Ω. Cắm trực tiếp vào nguồn 220V sẽ sinh dòng ngắn mạch hàng nghìn Ampe làm nổ que đo và hư hỏng thiết bị tức thì."
+              },
+              {
+                id: "b2_l4_q2",
+                q: "Ứng dụng nào sau đây của bức xạ hạt nhân trong nông nghiệp vừa mang lại hiệu quả diệt trừ sâu bệnh cao vừa thân thiện môi trường?",
+                options: [
+                  "Chiếu xạ tạo côn trùng đực triệt sản rồi thả ra tự nhiên để giảm số lượng cá thể gây hại mà không dùng thuốc hóa học.",
+                  "Tưới trực tiếp nước nhiễm chất phóng xạ vào rễ cây trồng để kích thích lớn nhanh.",
+                  "Đốt chất thải phóng xạ để xua đuổi các loài chim ăn quả.",
+                  "Pha bột uranium với phân bón vô cơ rải đại trà trên cánh đồng."
+                ],
+                correct: 0,
+                explain: "Kĩ thuật triệt sản côn trùng (SIT) dùng bức xạ tia gamma/tia X làm vô sinh côn trùng đực là giải pháp sinh học an toàn, không để lại dư lượng độc hại."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "bai-3",
+        code: "Đề 3",
+        lesson: "BÀI 3",
+        title: "Thực hành tính sai số & ghi kết quả đo",
+        desc: "Hệ SI, thứ nguyên, sai số tuyệt đối, sai số tỉ đối, cách ghi kết quả đo và chữ số có nghĩa",
+        summaryHtml: `
+          <p><strong>1. Hệ SI & thứ nguyên:</strong> 7 đơn vị cơ bản gồm: Mét (m), Kilôgam (kg), Giây (s), Kelvin (K), Ampe (A), Mol (mol), Candela (cd). Thứ nguyên: [Chiều dài]=L, [Khối lượng]=M, [Thời gian]=T.</p>
+          <p><strong>2. Phân loại phép đo & sai số:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li><em>Phép đo trực tiếp:</em> Đọc trực tiếp trên dụng cụ đo (thước, cân, đồng hồ).</li>
+            <li><em>Phép đo gián tiếp:</em> Xác định qua công thức liên hệ từ các phép đo trực tiếp ($v = s/t$, $D = m/V$).</li>
+            <li><em>Sai số hệ thống:</em> Có quy luật lặp lại (do điểm 0 bị lệch, chia độ sai, sai số dụng cụ). Sai số dụng cụ $\\Delta A_{dc}$ thường lấy bằng nửa độ chia nhỏ nhất hoặc một độ chia nhỏ nhất.</li>
+            <li><em>Sai số ngẫu nhiên:</em> Do thao tác, mắt nhìn nghiêng, gió, chấn động... Hạn chế bằng cách đo lặp lại nhiều lần và lấy giá trị trung bình.</li>
+          </ul>
+          <p><strong>3. Công thức tính sai số:</strong></p>
+          <p>• Giá trị trung bình: $\\bar{A} = \\frac{A_1 + A_2 + ... + A_n}{n}$. Sai số tuyệt đối: $\\Delta A = \\overline{\\Delta A} + \\Delta A_{dc}$.</p>
+          <p>• Sai số tỉ đối: $\\delta A = \\frac{\\Delta A}{\\bar{A}} \\times 100\\%$. Nếu $F = x^m \\cdot y^n / z^k$ thì $\\delta F = m\\cdot\\delta x + n\\cdot\\delta y + k\\cdot\\delta z$.</p>
+          <p>• Cách ghi kết quả đo: $A = \\bar{A} \\pm \\Delta A$.</p>
+        `,
+        levels: [
+          {
+            levelIndex: 1,
+            name: "Cấp 1 · Chinh phục 5 điểm",
+            desc: "Cực dễ: nhận biết phép đo trực tiếp, gián tiếp, các đơn vị cơ bản hệ SI.",
+            target: 5,
+            questions: [
+              {
+                id: "b3_l1_q1",
+                q: "Phép đo nào sau đây là PHÉP ĐO TRỰC TIẾP?",
+                options: [
+                  "Dùng thước kẻ đo chiều dài quyển sách giáo khoa Vật lí 10.",
+                  "Dùng công thức v = s / t để tính tốc độ của viên bi.",
+                  "Dùng công thức S = a × b để tính diện tích mảnh vườn hình chữ nhật.",
+                  "Dùng công thức D = m / V để xác định khối lượng riêng của quả cầu nhôm."
+                ],
+                correct: 0,
+                explain: "Phép đo trực tiếp là so sánh trực tiếp đại lượng cần đo với dụng cụ đo mang đơn vị chuẩn."
+              },
+              {
+                id: "b3_l1_q2",
+                q: "Trong hệ đơn vị quốc tế SI, đơn vị nào sau đây là ĐƠN VỊ DẪN XUẤT?",
+                options: [
+                  "Mét trên giây (m/s) hoặc Niutơn (N).",
+                  "Mét (m).",
+                  "Kilôgam (kg).",
+                  "Giây (s)."
+                ],
+                correct: 0,
+                explain: "Mét (m), kilôgam (kg), giây (s) là đơn vị cơ bản. Vận tốc (m/s), lực (N) là đơn vị dẫn xuất."
+              },
+              {
+                id: "b3_l1_q3",
+                q: "Sai số dụng cụ đo thông thường được quy ước lấy bằng:",
+                options: [
+                  "Một nửa độ chia nhỏ nhất (hoặc một độ chia nhỏ nhất) ghi trên dụng cụ.",
+                  "Một phần mười độ chia nhỏ nhất.",
+                  "Luôn bằng 0 đối với các đồng hồ hiện số.",
+                  "Bằng hai lần giá trị trung bình đo được."
+                ],
+                correct: 0,
+                explain: "Quy ước SGK Vật lí 10: Sai số dụng cụ thường được lấy bằng nửa độ chia nhỏ nhất hoặc một độ chia nhỏ nhất."
+              },
+              {
+                id: "b3_l1_q4",
+                q: "Công thức tính sai số tỉ đối (sai số tương đối) δA của đại lượng A là:",
+                options: [
+                  "δA = (ΔA / Ā) × 100%.",
+                  "δA = (Ā / ΔA) × 100%.",
+                  "δA = ΔA + Ā.",
+                  "δA = ΔA × Ā."
+                ],
+                correct: 0,
+                explain: "Sai số tỉ đối là tỉ số giữa sai số tuyệt đối và giá trị trung bình, tính theo phần trăm."
+              },
+              {
+                id: "b3_l1_q5",
+                q: "Cách ghi kết quả chuẩn xác của phép đo đại lượng vật lí A là:",
+                options: [
+                  "A = Ā ± ΔA (kèm theo đơn vị đo).",
+                  "A = Ā × ΔA.",
+                  "A = Ā / ΔA.",
+                  "A = ΔA - Ā."
+                ],
+                correct: 0,
+                explain: "Kết quả đo được biểu diễn dưới dạng: A = Ā ± ΔA (kèm đơn vị)."
+              }
+            ]
+          },
+          {
+            levelIndex: 2,
+            name: "Cấp 2 · Chinh phục 6 – 7 điểm",
+            desc: "Dễ đến vừa: tính giá trị trung bình, xác định số chữ số có nghĩa, phân biệt loại sai số.",
+            target: 7,
+            questions: [
+              {
+                id: "b3_l2_q1",
+                q: "Đo chiều dài của một vật 4 lần thu được các giá trị: L₁ = 20,1 cm; L₂ = 20,2 cm; L₃ = 20,1 cm; L₄ = 20,4 cm. Giá trị trung bình L̄ là:",
+                options: [
+                  "20,2 cm.",
+                  "20,1 cm.",
+                  "20,3 cm.",
+                  "20,4 cm."
+                ],
+                correct: 0,
+                explain: "L̄ = (20,1 + 20,2 + 20,1 + 20,4) / 4 = 80,8 / 4 = 20,2 cm."
+              },
+              {
+                id: "b3_l2_q2",
+                q: "Số 0,02050 có bao nhiêu chữ số có nghĩa?",
+                options: [
+                  "4 chữ số có nghĩa (2, 0, 5, 0).",
+                  "6 chữ số có nghĩa.",
+                  "3 chữ số có nghĩa.",
+                  "5 chữ số có nghĩa."
+                ],
+                correct: 0,
+                explain: "Các số 0 ở đầu không có nghĩa; số 0 giữa 2 và 5 có nghĩa; số 0 tận cùng bên phải phần thập phân có nghĩa. Vậy có 4 chữ số có nghĩa: 2, 0, 5, 0."
+              },
+              {
+                id: "b3_l2_q3",
+                q: "Một đại lượng đo được có giá trị trung bình là 50,0 cm và sai số tuyệt đối là 1,0 cm. Sai số tỉ đối của phép đo bằng:",
+                options: [
+                  "2,0%.",
+                  "1,0%.",
+                  "5,0%.",
+                  "0,5%."
+                ],
+                correct: 0,
+                explain: "δ = (1,0 / 50,0) × 100% = 2,0%."
+              },
+              {
+                id: "b3_l2_q4",
+                q: "Loại sai số nào có thể loại trừ bằng cách hiệu chỉnh kim dụng cụ đo về vạch số 0 trước khi đo?",
+                options: [
+                  "Sai số hệ thống.",
+                  "Sai số ngẫu nhiên.",
+                  "Sai số tuyệt đối trung bình.",
+                  "Sai số tỉ đối ngẫu nhiên."
+                ],
+                correct: 0,
+                explain: "Lệch vạch số 0 là nguyên nhân sinh ra sai số hệ thống, có thể loại trừ bằng việc hiệu chỉnh dụng cụ trước khi đo."
+              }
+            ]
+          },
+          {
+            levelIndex: 3,
+            name: "Cấp 3 · Chinh phục 8 điểm",
+            desc: "Thông hiểu: quy tắc lan truyền sai số tỉ đối trong phép đo gián tiếp.",
+            target: 8,
+            questions: [
+              {
+                id: "b3_l3_q1",
+                q: "Tốc độ chuyển động đều được tính bằng công thức v = s / t. Biết sai số tỉ đối của quãng đường là δs = 1,2% và thời gian là δt = 0,8%. Sai số tỉ đối δv của tốc độ bằng:",
+                options: [
+                  "2,0%.",
+                  "0,4%.",
+                  "0,96%.",
+                  "1,5%."
+                ],
+                correct: 0,
+                explain: "Sai số tỉ đối của một thương bằng tổng các sai số tỉ đối: δv = δs + δt = 1,2% + 0,8% = 2,0%."
+              },
+              {
+                id: "b3_l3_q2",
+                q: "Diện tích hình chữ nhật tính theo S = a × b. Nếu cạnh a có sai số tỉ đối 2% và cạnh b có sai số tỉ đối 3%, thì sai số tỉ đối của diện tích S là:",
+                options: [
+                  "5%.",
+                  "6%.",
+                  "1%.",
+                  "1,5%."
+                ],
+                correct: 0,
+                explain: "Với phép nhân S = a.b, sai số tỉ đối bằng tổng: δS = δa + δb = 2% + 3% = 5%."
+              },
+              {
+                id: "b3_l3_q3",
+                q: "Một bạn học sinh đo được cạnh hình vuông L = (10,0 ± 0,2) cm. Sai số tỉ đối trong phép đo chu vi C = 4L của hình vuông là:",
+                options: [
+                  "2,0%.",
+                  "8,0%.",
+                  "0,8%.",
+                  "4,0%."
+                ],
+                correct: 0,
+                explain: "Vì số 4 là hằng số chính xác tuyệt đối (không có sai số), nên δC = δL = (0,2 / 10,0) × 100% = 2,0%."
+              }
+            ]
+          },
+          {
+            levelIndex: 4,
+            name: "Cấp 4 · Chinh phục 9 – 10 điểm",
+            desc: "Vận dụng cao: lan truyền sai số lũy thừa, tính sai số gia tốc g, thể tích hình cầu.",
+            target: 10,
+            questions: [
+              {
+                id: "b3_l4_q1",
+                q: "Gia tốc rơi tự do được đo gián tiếp bằng công thức g = 2s / t². Công thức tính sai số tỉ đối δg theo sai số tỉ đối của s và t là:",
+                options: [
+                  "δg = δs + 2δt.",
+                  "δg = 2δs + δt.",
+                  "δg = δs + δt².",
+                  "δg = δs / (2δt)."
+                ],
+                correct: 0,
+                explain: "Công thức lũy thừa: với số hạng mẫu số t² thì số mũ đưa ra đằng trước: δg = δs + 2.δt."
+              },
+              {
+                id: "b3_l4_q2",
+                q: "Đo bán kính quả bóng R = (10,0 ± 0,1) cm. Công thức thể tích hình cầu là V = (4/3)πR³. Sai số tỉ đối δV của phép đo thể tích quả bóng bằng:",
+                options: [
+                  "3,0%.",
+                  "1,0%.",
+                  "0,1%.",
+                  "4,0%."
+                ],
+                correct: 0,
+                explain: "δR = (0,1 / 10,0) × 100% = 1%. Vì V phụ thuộc R³, nên δV = 3 × δR = 3 × 1% = 3,0%."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "bai-6",
+        code: "Đề 4",
+        lesson: "BÀI 6",
+        title: "Thực hành: Đo tốc độ của vật chuyển động",
+        desc: "Đồng hồ đo hiện số MC964, cổng quang điện, đo tốc độ tức thời và tốc độ trung bình",
+        summaryHtml: `
+          <p><strong>1. Dụng cụ thí nghiệm đo tốc độ viên bi thép:</strong> Đồng hồ đo thời gian hiện số MC964; Cổng quang điện (sensor cảm biến); Máng nhôm có thước đo gắn sẵn (ĐCNN 1 mm); Nam châm điện giữ/thả bi; Thước kẹp đo đường kính viên bi.</p>
+          <p><strong>2. Các chế độ (MODE) trên đồng hồ hiện số:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li><em>MODE A:</em> Đo thời gian vật chắn cổng quang điện cắm ở ổ A (dùng đo <strong>tốc độ tức thời</strong> qua cổng A: $v = d / t$).</li>
+            <li><em>MODE B:</em> Đo thời gian vật chắn cổng quang điện cắm ở ổ B.</li>
+            <li><em>MODE A+B:</em> Đo tổng hai khoảng thời gian vật chắn cổng A và vật chắn cổng B.</li>
+            <li><em>MODE A ↔ B:</em> Đo thời gian vật di chuyển từ cổng A đến cổng B (dùng đo <strong>tốc độ trung bình</strong>: $v_{tb} = s / t$).</li>
+            <li><em>Nút RESET:</em> Đặt lại chỉ số đồng hồ về giá trị ban đầu 0.000 s.</li>
+          </ul>
+          <p><strong>3. Ưu nhược điểm các phương pháp đo tốc độ:</strong> Đồng hồ bấm giây (nhanh, rẻ nhưng sai số cao do phản xạ tay người); Cổng quang điện + đồng hồ hiện số (chính xác cao, loại bỏ sai số phản xạ con người); Súng bắn tốc độ (đo trực tiếp tốc độ tức thời bằng sóng vô tuyến/Doppler).</p>
+        `,
+        levels: [
+          {
+            levelIndex: 1,
+            name: "Cấp 1 · Chinh phục 5 điểm",
+            desc: "Cực dễ: nhận biết chức năng các núm nút MODE, các bộ phận trong bộ thí nghiệm đo tốc độ.",
+            target: 5,
+            questions: [
+              {
+                id: "b6_l1_q1",
+                q: "Để đo tốc độ trung bình của viên bi thép lăn giữa hai cổng quang điện E và F, ta chọn chế độ (MODE) nào trên đồng hồ đo hiện số?",
+                options: [
+                  "MODE A ↔ B.",
+                  "MODE A.",
+                  "MODE B.",
+                  "MODE T."
+                ],
+                correct: 0,
+                explain: "Chế độ MODE A ↔ B đếm thời gian kể từ khi vật bắt đầu chắn cổng E (cắm ở A) đến khi vật đến chắn cổng F (cắm ở B), dùng đo thời gian đi hết quãng đường EF."
+              },
+              {
+                id: "b6_l1_q2",
+                q: "Chức năng của nút 'RESET' màu đỏ trên đồng hồ đo thời gian hiện số là gì?",
+                options: [
+                  "Đặt các số hiển thị trên màn hình về giá trị ban đầu 0.000 s.",
+                  "Tăng tốc độ lăn của viên bi thép trên máng.",
+                  "Chuyển đổi giữa dòng điện xoay chiều và một chiều.",
+                  "Điều chỉnh thang đo thời gian từ giây sang phút."
+                ],
+                correct: 0,
+                explain: "Nút RESET dùng để trả màn hình hiện số về giá trị 0.000 s để sẵn sàng cho lần đo tiếp theo."
+              },
+              {
+                id: "b6_l1_q3",
+                q: "Để đo đường kính của viên bi thép với độ chính xác cao trong bài thực hành, dụng cụ nào được sử dụng?",
+                options: [
+                  "Thước kẹp (thước cặp).",
+                  "Thước cuộn xây dựng.",
+                  "Thước đo góc hình bán nguyệt.",
+                  "Thước dây mềm may mặc."
+                ],
+                correct: 0,
+                explain: "Thước kẹp có mỏ đo chuyên dụng và du xích đo chính xác đường kính ngoài của viên bi với độ chính xác tới 0,02 mm hoặc 0,1 mm."
+              },
+              {
+                id: "b6_l1_q4",
+                q: "Thiết bị nào sau đây thường được cảnh sát giao thông sử dụng để đo trực tiếp tốc độ tức thời của ô tô, xe máy trên đường?",
+                options: [
+                  "Súng bắn tốc độ.",
+                  "Đồng hồ bấm giây kết hợp thước cuộn.",
+                  "Cổng quang điện cố định trên lòng đường.",
+                  "Nhiệt kế hồng ngoại."
+                ],
+                correct: 0,
+                explain: "Súng bắn tốc độ sử dụng sóng điện từ hoặc tia laser dựa trên hiệu ứng Doppler đo trực tiếp tốc độ tức thời của phương tiện."
+              },
+              {
+                id: "b6_l1_q5",
+                q: "Để đo tốc độ tức thời của viên bi khi đi qua một cổng quang điện duy nhất nối với ổ cắm A, ta đặt MODE ở vị trí:",
+                options: [
+                  "MODE A.",
+                  "MODE A ↔ B.",
+                  "MODE A + B.",
+                  "MODE T."
+                ],
+                correct: 0,
+                explain: "MODE A đo khoảng thời gian viên bi che khuất cảm biến của cổng quang A. Từ đó v = d / t (với d là đường kính bi)."
+              }
+            ]
+          },
+          {
+            levelIndex: 2,
+            name: "Cấp 2 · Chinh phục 6 – 7 điểm",
+            desc: "Dễ đến vừa: hiểu nguyên lí cổng quang điện, đánh giá ưu nhược điểm các phương án đo.",
+            target: 7,
+            questions: [
+              {
+                id: "b6_l2_q1",
+                q: "Ưu điểm nổi bật nhất của việc dùng cổng quang điện và đồng hồ hiện số so với dùng đồng hồ bấm giây bằng tay là:",
+                options: [
+                  "Kết quả đo thời gian có độ chính xác rất cao do loại bỏ được sai số phản xạ bấm tay của con người.",
+                  "Giá thành rẻ hơn rất nhiều so với đồng hồ bấm giây thủ công.",
+                  "Thiết bị gọn nhẹ, dễ dàng bỏ túi mang theo mọi lúc mọi nơi.",
+                  "Có thể đo được tốc độ của cả những vật thể bay trên bầu trời."
+                ],
+                correct: 0,
+                explain: "Cổng quang điện đóng ngắt mạch đo tự động bằng chùm tia hồng ngoại, không phụ thuộc vào phản xạ bấm tay của người làm thí nghiệm."
+              },
+              {
+                id: "b6_l2_q2",
+                q: "Khi cắm giắc cắm của cổng quang điện vào ổ cắm A, B ở mặt sau đồng hồ hiện số, thao tác kỹ thuật nào sau đây là BẮT BUỘC?",
+                options: [
+                  "Xoay đúng khe định vị của giắc cắm, cắm thẳng và nhẹ nhàng, không rung lắc chân cắm.",
+                  "Vặn xoắn dây dẫn nhiều vòng trước khi cắm để giữ chặt.",
+                  "Bẻ cong các chân kim loại bên trong giắc cắm để tiếp xúc tốt hơn.",
+                  "Vừa cắm vừa bật tắt công tắc nguồn liên tục."
+                ],
+                correct: 0,
+                explain: "Giắc cắm cổng quang có các chân kim nhỏ và khe định vị, cần cắm thẳng và đúng khớp để tránh gãy chân cắm."
+              },
+              {
+                id: "b6_l2_q3",
+                q: "Trên đồng hồ đo thời gian hiện số MC964, thang đo ghi '9.999 s' có độ phân giải thời gian (sai số dụng cụ) là bao nhiêu?",
+                options: [
+                  "0,001 s (1 miligiây).",
+                  "0,01 s.",
+                  "0,1 s.",
+                  "1 s."
+                ],
+                correct: 0,
+                explain: "Màn hình hiển thị đến 3 chữ số thập phân sau dấu phẩy (0.000 s), do đó độ chia nhỏ nhất là 0,001 s."
+              },
+              {
+                id: "b6_l2_q4",
+                q: "Nhược điểm của phương án đo tốc độ bằng xe kĩ thuật số hoặc cổng quang điện trong trường học là:",
+                options: [
+                  "Lắp đặt cồng kềnh, chi phí thiết bị tương đối cao và chỉ áp dụng đo cho vật có kích thước lọt qua cổng quang.",
+                  "Sai số đo lường quá lớn, kém xa đồng hồ bấm giây cầm tay.",
+                  "Hoàn toàn không thể đo được thời gian dưới 1 giây.",
+                  "Làm giảm tuổi thọ của viên bi thép sau mỗi lần đo."
+                ],
+                correct: 0,
+                explain: "Bộ thí nghiệm cổng quang cần máng, dây nối, giá đỡ phức tạp và chỉ đo được cho các vật nhỏ lọt vừa cổng cảm biến."
+              }
+            ]
+          },
+          {
+            levelIndex: 3,
+            name: "Cấp 3 · Chinh phục 8 điểm",
+            desc: "Thông hiểu: trình tự các bước tiến hành thí nghiệm đo tốc độ trung bình và tốc độ tức thời.",
+            target: 8,
+            questions: [
+              {
+                id: "b6_l3_q1",
+                q: "Sắp xếp đúng thứ tự các bước chính khi tiến hành đo TỐC ĐỘ TRUNG BÌNH của viên bi trên máng nghiêng:",
+                options: [
+                  "Bố trí thí nghiệm → Chọn MODE A ↔ B → Đo khoảng cách s giữa 2 cổng quang → Thả bi lăn qua 2 cổng → Đọc thời gian t → Tính v = s / t.",
+                  "Thả bi lăn → Bố trí thí nghiệm → Bật đồng hồ → Đọc thời gian → Đo khoảng cách.",
+                  "Tính v = s / t → Thả bi lăn → Chọn MODE A → Đọc thời gian → Đo khoảng cách s.",
+                  "Bố trí thí nghiệm → Thả bi lăn → Bật nguồn đồng hồ → Đọc thời gian → Chọn MODE B."
+                ],
+                correct: 0,
+                explain: "Quy trình chuẩn: Lắp đặt thiết bị -> Cài đặt đồng hồ MODE A<->B -> Đo khoảng cách quãng đường s -> Bấm nhả nam châm điện cho bi lăn -> Đọc thời gian t hiển thị -> Tính toán v."
+              },
+              {
+                id: "b6_l3_q2",
+                q: "Để đo tốc độ tức thời của xe thí nghiệm có gắn tấm chắn sáng rộng d = 10 mm đi qua một cổng quang điện, nếu đồng hồ báo thời gian chắn sáng t = 0,020 s thì tốc độ tức thời của xe bằng:",
+                options: [
+                  "0,50 m/s.",
+                  "5,0 m/s.",
+                  "0,05 m/s.",
+                  "2,0 m/s."
+                ],
+                correct: 0,
+                explain: "Đổi d = 10 mm = 0,01 m. Tốc độ tức thời: v = d / t = 0,01 / 0,020 = 0,50 m/s."
+              },
+              {
+                id: "b6_l3_q3",
+                q: "Trong thí nghiệm đo tốc độ của viên bi lăn trên máng, nam châm điện được cấp nguồn thông qua một nút bấm kép có tác dụng gì?",
+                options: [
+                  "Giữ cố định viên bi tại vị trí ban đầu và ngắt dòng điện dứt khoát để thả bi rơi tự nhiên không vận tốc đầu.",
+                  "Làm tăng từ tính để hút mạnh viên bi lao nhanh hơn bình thường.",
+                  "Đo trực tiếp thời gian bi bắt đầu chuyển động.",
+                  "Làm nóng viên bi để giảm ma sát với mặt máng."
+                ],
+                correct: 0,
+                explain: "Nam châm điện giữ bi ở đúng vạch xuất phát; khi bấm nút ngắt điện, nam châm nhả bi dứt khoát và đảm bảo bi bắt đầu chuyển động không vận tốc đầu (v0 = 0)."
+              }
+            ]
+          },
+          {
+            levelIndex: 4,
+            name: "Cấp 4 · Chinh phục 9 – 10 điểm",
+            desc: "Vận dụng: xử lí sai số thực nghiệm, tính toán tốc độ trung bình kèm khoảng sai số hoàn chỉnh.",
+            target: 10,
+            questions: [
+              {
+                id: "b6_l4_q1",
+                q: "Đo quãng đường giữa hai cổng quang s = (0,500 ± 0,001) m. Ba lần đo thời gian viên bi đi qua hai cổng thu được: t₁ = 0,777 s; t₂ = 0,780 s; t₃ = 0,776 s. Lấy sai số dụng cụ đồng hồ là 0,001 s. Giá trị trung bình của thời gian t̄ và tốc độ trung bình v̄ là:",
+                options: [
+                  "t̄ = 0,778 s và v̄ ≈ 0,643 m/s.",
+                  "t̄ = 0,780 s và v̄ ≈ 0,650 m/s.",
+                  "t̄ = 0,775 s và v̄ ≈ 0,625 m/s.",
+                  "t̄ = 0,778 s và v̄ ≈ 0,778 m/s."
+                ],
+                correct: 0,
+                explain: "t̄ = (0,777 + 0,780 + 0,776) / 3 ≈ 0,7777 s ≈ 0,778 s. Tốc độ trung bình: v̄ = s̄ / t̄ = 0,500 / 0,7777 ≈ 0,643 m/s."
+              },
+              {
+                id: "b6_l4_q2",
+                q: "Trong phép đo tốc độ trung bình v = s / t ở trên, nếu sai số tỉ đối của quãng đường là δs = 0,20% và sai số tỉ đối của thời gian là δt = 0,28%, thì sai số tuyệt đối của tốc độ Δv xấp xỉ bằng:",
+                options: [
+                  "0,003 m/s.",
+                  "0,030 m/s.",
+                  "0,001 m/s.",
+                  "0,015 m/s."
+                ],
+                correct: 0,
+                explain: "Sai số tỉ đối: δv = δs + δt = 0,20% + 0,28% = 0,48%. Sai số tuyệt đối: Δv = v̄ × δv = 0,643 × 0,48% ≈ 0,00308 m/s ≈ 0,003 m/s."
+              }
+            ]
+          }
+        ]
+      }
+    ];
+
+    /* =====================================================================
+       QUẢN LÍ TIẾN ĐỘ & BỘ NHỚ LOCAL STORAGE
+       ===================================================================== */
+    const STORAGE_KEY = 'vl10_luyen_thuoc_app_state_v2';
+
+    let appState = {
+      user: {
+        name: '',
+        targetScore: '',
+        dream: ''
+      },
+      // Lưu số lần đúng liên tiếp (0 đến 3) cho từng câu hỏi: { [questionId]: number }
+      progress: {}
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          appState = JSON.parse(raw);
+        }
+      } catch (e) {
+        console.error("Load state error", e);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.error("Save state error", e);
+      }
+    }
+
+    function saveUserProfile() {
+      appState.user.name = document.getElementById('user-name').value.trim();
+      appState.user.targetScore = document.getElementById('user-target-score').value;
+      appState.user.dream = document.getElementById('user-dream').value.trim();
+      saveState();
+    }
+
+    function resetAllProgress() {
+      if (confirm("Em có chắc chắn muốn đặt lại toàn bộ tiến độ làm bài để luyện lại từ đầu không?")) {
+        appState.progress = {};
+        saveState();
+        renderDashboard();
+        if (currentExamId) {
+          openExamDetail(currentExamId);
+        }
+      }
+    }
+
+    /* Các hàm tiện ích tính toán tiến độ */
+    function getQuestionStreak(qId) {
+      return appState.progress[qId] || 0;
+    }
+
+    function isQuestionMastered(qId) {
+      return getQuestionStreak(qId) >= 3;
+    }
+
+    function getExamTotalQuestions(exam) {
+      return exam.levels.reduce((acc, lvl) => acc + lvl.questions.length, 0);
+    }
+
+    function getExamMasteredCount(exam) {
+      let count = 0;
+      exam.levels.forEach(lvl => {
+        lvl.questions.forEach(q => {
+          if (isQuestionMastered(q.id)) count++;
+        });
+      });
+      return count;
+    }
+
+    function getLevelMasteredCount(lvl) {
+      return lvl.questions.filter(q => isQuestionMastered(q.id)).length;
+    }
+
+    function getTotalAppQuestions() {
+      return DATA_EXAMS.reduce((acc, ex) => acc + getExamTotalQuestions(ex), 0);
+    }
+
+    function getTotalAppMastered() {
+      return DATA_EXAMS.reduce((acc, ex) => acc + getExamMasteredCount(ex), 0);
+    }
+
+    /* =====================================================================
+       ĐIỀU HƯỚNG VIEW (ROUTING)
+       ===================================================================== */
+    let currentExamId = null;
+    let currentQuizQueue = [];
+    let currentQuizIndex = 0;
+    let currentLevelObj = null;
+
+    function showView(viewName) {
+      document.getElementById('view-dashboard').classList.add('hidden');
+      document.getElementById('view-exam').classList.add('hidden');
+      document.getElementById('view-quiz').classList.add('hidden');
+
+      if (viewName === 'dashboard') {
+        document.getElementById('view-dashboard').classList.remove('hidden');
+        renderDashboard();
+      } else if (viewName === 'exam') {
+        document.getElementById('view-exam').classList.remove('hidden');
+      } else if (viewName === 'quiz') {
+        document.getElementById('view-quiz').classList.remove('hidden');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToDashboard() {
+      showView('dashboard');
+    }
+
+    /* =====================================================================
+       RENDER GIAO DIỆN TRANG CHỦ (VIEW 1)
+       ===================================================================== */
+    function renderDashboard() {
+      document.getElementById('user-name').value = appState.user.name || '';
+      document.getElementById('user-target-score').value = appState.user.targetScore || '';
+      document.getElementById('user-dream').value = appState.user.dream || '';
+
+      const totalQ = getTotalAppQuestions();
+      const totalM = getTotalAppMastered();
+      const totalPercent = totalQ > 0 ? Math.round((totalM / totalQ) * 100) : 0;
+
+      document.getElementById('total-mastered-text').innerText = `${totalM} / ${totalQ} câu đã thuộc`;
+      document.getElementById('total-percent-text').innerText = `${totalPercent}%`;
+      document.getElementById('total-progress-bar').style.width = `${totalPercent}%`;
+
+      if (totalM > 0) {
+        document.getElementById('total-progress-sub').innerText = `Rất tốt! Em đã thuộc chắc chắn ${totalM} câu lý thuyết rồi. Cố gắng thêm nhé!`;
+      } else {
+        document.getElementById('total-progress-sub').innerText = `Hôm nay bắt đầu từ một câu đầu tiên nhé.`;
+      }
+
+      const listContainer = document.getElementById('exams-list');
+      listContainer.innerHTML = '';
+
+      DATA_EXAMS.forEach((exam) => {
+        const cMastered = getExamMasteredCount(exam);
+        const cTotal = getExamTotalQuestions(exam);
+        const cPercent = Math.round((cMastered / cTotal) * 100);
+
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-xl p-4 border border-slate-200/90 shadow-xs hover:border-slate-300 transition cursor-pointer space-y-2.5";
+        card.onclick = () => openExamDetail(exam.id);
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-[11px] text-slate-400 font-medium">
+            <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px] uppercase font-semibold">${exam.lesson}</span>
+            <span>${cTotal} câu</span>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-slate-800">${exam.code}: ${exam.title}</h3>
+            <p class="text-[12px] text-slate-500 line-clamp-1 mt-0.5">${exam.desc}</p>
+          </div>
+          <div class="space-y-1.5 pt-1">
+            <div class="flex justify-between items-center text-[11px] text-slate-500 font-medium">
+              <span>${cMastered} / ${cTotal} câu đã thuộc</span>
+              <span class="${cMastered === cTotal && cTotal > 0 ? 'text-emerald-600 font-semibold' : 'text-slate-400'}">${cPercent}%</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+              <div class="bg-rose-600 h-full rounded-full transition-all duration-300" style="width: ${cPercent}%"></div>
+            </div>
+          </div>
+        `;
+        listContainer.appendChild(card);
+      });
+    }
+
+    /* =====================================================================
+       RENDER GIAO DIỆN CHI TIẾT ĐỀ (VIEW 2)
+       ===================================================================== */
+    function openExamDetail(examId) {
+      currentExamId = examId;
+      const exam = DATA_EXAMS.find(e => e.id === examId);
+      if (!exam) return;
+
+      document.getElementById('exam-detail-subtitle').innerText = `${exam.lesson} · KẾT NỐI TRI THỨC`;
+      document.getElementById('exam-detail-title').innerText = `${exam.code}: ${exam.title}`;
+      document.getElementById('exam-detail-desc').innerText = exam.desc;
+
+      const totalM = getExamMasteredCount(exam);
+      const totalT = getExamTotalQuestions(exam);
+      const percent = Math.round((totalM / totalT) * 100);
+
+      document.getElementById('exam-mastered-text').innerText = `${totalM} / ${totalT} câu của đề đã thuộc`;
+      document.getElementById('exam-percent-text').innerText = `${percent}%`;
+      document.getElementById('exam-progress-bar').style.width = `${percent}%`;
+
+      const levelsBox = document.getElementById('levels-container');
+      levelsBox.innerHTML = '';
+
+      exam.levels.forEach(lvl => {
+        const lvlMastered = getLevelMasteredCount(lvl);
+        const lvlTotal = lvl.questions.length;
+        const lvlPercent = Math.round((lvlMastered / lvlTotal) * 100);
+        const unmasteredCount = lvl.questions.filter(q => !isQuestionMastered(q.id)).length;
+
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-xl p-4 border border-slate-200/90 shadow-xs space-y-3";
+        card.innerHTML = `
+          <div class="flex items-start justify-between">
+            <div class="pr-2">
+              <h3 class="text-sm font-bold text-slate-800">${lvl.name}</h3>
+              <p class="text-[12px] text-slate-500 mt-0.5 leading-relaxed">${lvl.desc}</p>
+            </div>
+            <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded whitespace-nowrap">
+              ${lvlMastered}/${lvlTotal} thuộc
+            </span>
+          </div>
+
+          <div class="w-full bg-slate-100 rounded-full h-1 overflow-hidden">
+            <div class="bg-rose-600 h-full rounded-full transition-all duration-300" style="width: ${lvlPercent}%"></div>
+          </div>
+
+          <div class="pt-1 flex flex-wrap gap-2 text-xs">
+            <button onclick="startQuiz('${exam.id}', ${lvl.levelIndex}, 'continue')" class="px-3.5 py-1.5 rounded-lg font-medium transition cursor-pointer ${
+              unmasteredCount > 0 
+                ? 'bg-rose-700 hover:bg-rose-800 text-white shadow-xs' 
+                : 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default'
+            }">
+              ${unmasteredCount > 0 ? `Luyện tiếp (${unmasteredCount} câu đang luyện)` : '✓ Đã hoàn thành cấp'}
+            </button>
+            <button onclick="startQuiz('${exam.id}', ${lvl.levelIndex}, 'all')" class="px-3.5 py-1.5 border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition cursor-pointer">
+              Làm cả cấp (${lvlTotal} câu)
+            </button>
+          </div>
+        `;
+        levelsBox.appendChild(card);
+      });
+
+      document.getElementById('theory-content').innerHTML = exam.summaryHtml;
+      document.getElementById('theory-content').classList.add('hidden');
+      document.getElementById('theory-chevron').innerText = "Xem thêm ▼";
+
+      showView('exam');
+    }
+
+    function toggleTheorySummary() {
+      const box = document.getElementById('theory-content');
+      const chev = document.getElementById('theory-chevron');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        chev.innerText = "Thu gọn ▲";
+      } else {
+        box.classList.add('hidden');
+        chev.innerText = "Xem thêm ▼";
+      }
+    }
+
+    /* =====================================================================
+       THUẬT TOÁN ĐẢO ĐÁP ÁN (FISHER-YATES SHUFFLE) & TIẾN TRÌNH QUIZ
+       ===================================================================== */
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function startQuiz(examId, levelIndex, mode) {
+      initAudio();
+      const exam = DATA_EXAMS.find(e => e.id === examId);
+      if (!exam) return;
+      const level = exam.levels.find(l => l.levelIndex === levelIndex);
+      if (!level) return;
+
+      currentLevelObj = level;
+
+      let queue = [];
+      if (mode === 'continue') {
+        queue = level.questions.filter(q => !isQuestionMastered(q.id));
+        if (queue.length === 0) {
+          queue = [...level.questions];
+        }
+      } else {
+        queue = [...level.questions];
+      }
+
+      // Xáo trộn thứ tự các câu hỏi trong phiên
+      currentQuizQueue = shuffleArray(queue);
+      currentQuizIndex = 0;
+
+      showView('quiz');
+      renderCurrentQuizQuestion();
+    }
+
+    // Biến lưu danh sách lựa chọn đã được đảo ngẫu nhiên của câu hỏi hiện tại
+    let currentShuffledOptions = [];
+
+    function renderCurrentQuizQuestion() {
+      if (currentQuizIndex >= currentQuizQueue.length) {
+        finishQuiz();
+        return;
+      }
+
+      const q = currentQuizQueue[currentQuizIndex];
+      const streak = getQuestionStreak(q.id);
+
+      // Cập nhật huy hiệu góc trên
+      document.getElementById('quiz-header-badge').innerText = `${currentLevelObj.name.split('·')[0].trim()} • Câu ${currentQuizIndex + 1}/${currentQuizQueue.length}`;
+      
+      // Vẽ 3 chấm tròn thể hiện mức độ thuộc (Spaced Repetition Streak)
+      const dotsContainer = document.getElementById('quiz-streak-dots');
+      dotsContainer.innerHTML = '';
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.createElement('span');
+        dot.className = `inline-block w-2.5 h-2.5 rounded-full transition-all ${
+          i <= streak ? 'bg-emerald-500 ring-2 ring-emerald-200' : 'bg-slate-200'
+        }`;
+        dotsContainer.appendChild(dot);
+      }
+
+      document.getElementById('quiz-status-pill').innerText = streak >= 3 
+        ? "Đã thuộc (3/3)" 
+        : `Đã đúng ${streak}/3 lần liên tiếp`;
+
+      // Nội dung câu hỏi
+      document.getElementById('quiz-question-text').innerText = q.q;
+
+      // ĐẢO VỊ TRÍ ĐÁP ÁN (Fisher-Yates Shuffle)
+      // Mỗi đáp án được gói thành đối tượng { text, isCorrect }
+      const rawOptions = q.options.map((optText, idx) => ({
+        text: optText,
+        isCorrect: idx === q.correct
+      }));
+      currentShuffledOptions = shuffleArray(rawOptions);
+
+      // Render danh sách lựa chọn A, B, C, D
+      const optContainer = document.getElementById('quiz-options-container');
+      optContainer.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D'];
+      currentShuffledOptions.forEach((optObj, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "quiz-option w-full text-left p-3.5 rounded-lg border border-slate-200/90 bg-white flex items-start gap-3 text-xs leading-relaxed text-slate-800 font-medium group cursor-pointer";
+        btn.onclick = () => handleAnswer(idx);
+        btn.id = `quiz-opt-${idx}`;
+        btn.innerHTML = `
+          <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-[11px] shrink-0 group-hover:bg-slate-200 transition">
+            ${letters[idx]}
+          </span>
+          <span class="pt-0.5 text-slate-700">${optObj.text}</span>
+        `;
+        optContainer.appendChild(btn);
+      });
+
+      // Ẩn thanh phản hồi kết quả
+      document.getElementById('quiz-feedback').classList.add('hidden');
+    }
+
+    function handleAnswer(selectedIndex) {
+      const q = currentQuizQueue[currentQuizIndex];
+      const selectedOption = currentShuffledOptions[selectedIndex];
+      const isCorrect = selectedOption.isCorrect;
+      const prevStreak = getQuestionStreak(q.id);
+
+      // Khóa và tô màu các đáp án
+      currentShuffledOptions.forEach((optObj, idx) => {
+        const btn = document.getElementById(`quiz-opt-${idx}`);
+        btn.onclick = null;
+        btn.classList.remove('quiz-option', 'cursor-pointer');
+        btn.disabled = true;
+
+        if (optObj.isCorrect) {
+          btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-950');
+          btn.querySelector('span:first-child').className = "w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[11px] shrink-0";
+        } else if (idx === selectedIndex) {
+          btn.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-950');
+          btn.querySelector('span:first-child').className = "w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center font-bold text-[11px] shrink-0";
+        } else {
+          btn.classList.add('opacity-40');
+        }
+      });
+
+      // Cập nhật streak
+      let newStreak = prevStreak;
+      if (isCorrect) {
+        newStreak = Math.min(3, prevStreak + 1);
+        appState.progress[q.id] = newStreak;
+        if (newStreak === 3) {
+          playSound('mastered');
+        } else {
+          playSound('correct');
+        }
+      } else {
+        // Trả lời sai -> reset streak về 0, đẩy câu hỏi vào cuối queue để làm lại
+        newStreak = 0;
+        appState.progress[q.id] = 0;
+        currentQuizQueue.push(q);
+        playSound('wrong');
+      }
+      saveState();
+
+      // Cập nhật lại 3 chấm tròn
+      const dotsContainer = document.getElementById('quiz-streak-dots');
+      dotsContainer.innerHTML = '';
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.createElement('span');
+        dot.className = `inline-block w-2.5 h-2.5 rounded-full transition-all ${
+          i <= newStreak ? 'bg-emerald-500 ring-2 ring-emerald-200' : 'bg-slate-200'
+        }`;
+        dotsContainer.appendChild(dot);
+      }
+
+      // Hiển thị khung phản hồi và giải thích
+      const feedback = document.getElementById('quiz-feedback');
+      const banner = document.getElementById('quiz-feedback-banner');
+      feedback.classList.remove('hidden');
+
+      if (isCorrect) {
+        banner.className = "p-3.5 rounded-lg text-xs leading-relaxed bg-emerald-50 border border-emerald-200 text-emerald-950";
+        banner.innerHTML = `
+          <div class="flex items-center gap-1.5 font-bold text-emerald-800 mb-1">
+            <span>✓ Rất chính xác!</span>
+            <span>${newStreak >= 3 ? '🎉 ĐÃ THUỘC (3/3 LẦN)' : `(${newStreak}/3 LẦN LIÊN TIẾP)`}</span>
+          </div>
+          <div>${q.explain || 'Em đã ghi nhớ rất chuẩn xác.'}</div>
+        `;
+      } else {
+        banner.className = "p-3.5 rounded-lg text-xs leading-relaxed bg-rose-50 border border-rose-200 text-rose-950";
+        banner.innerHTML = `
+          <div class="flex items-center gap-1.5 font-bold text-rose-800 mb-1">
+            <span>✗ Chưa chính xác</span>
+            <span>(Câu này được đưa về cuối phiên để em ghi nhớ lại)</span>
+          </div>
+          <div><strong>Lời giải chi tiết:</strong> ${q.explain}</div>
+        `;
+      }
+
+      feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function nextQuestion() {
+      currentQuizIndex++;
+      renderCurrentQuizQuestion();
+    }
+
+    function finishQuiz() {
+      openExamDetail(currentExamId);
+    }
+
+    function exitQuiz() {
+      openExamDetail(currentExamId);
+    }
+
+    /* =====================================================================
+       XUẤT BÁO CÁO KẾT QUẢ / NỘP BÀI
+       ===================================================================== */
+    function exportProgressReport() {
+      const name = appState.user.name || 'Học sinh chưa nhập tên';
+      const target = appState.user.targetScore ? `${appState.user.targetScore} điểm` : 'Chưa đặt';
+      const dream = appState.user.dream || 'Chưa ghi chú';
+
+      const totalQ = getTotalAppQuestions();
+      const totalM = getTotalAppMastered();
+      const percent = Math.round((totalM / totalQ) * 100);
+
+      let examLines = '';
+      DATA_EXAMS.forEach(ex => {
+        const m = getExamMasteredCount(ex);
+        const t = getExamTotalQuestions(ex);
+        const p = Math.round((m / t) * 100);
+        examLines += `• ${ex.code} (${ex.title}): ${m}/${t} câu (${p}%)\n`;
+      });
+
+      const reportText = `BÁO CÁO KẾT QUẢ LUYỆN THUỘC LÝ THUYẾT VẬT LÍ 10
+Học sinh: ${name}
+Mục tiêu điểm số: ${target}
+Ước mơ / Động lực: ${dream}
+----------------------------------------
+Tổng số câu đã thuộc chắc chắn: ${totalM}/${totalQ} câu (${percent}%)
+Tiến độ từng đề:
+${examLines}
+Đánh giá: ${percent >= 80 ? 'Rất xuất sắc! Nắm vững toàn diện lý thuyết.' : percent >= 50 ? 'Khá tốt! Đang trên đà tiến bộ vững vàng.' : 'Cần tiếp tục kiên trì luyện tập thêm.'}`;
+
+      const modalContent = document.getElementById('report-modal-content');
+      modalContent.innerHTML = `
+        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 font-mono text-[11px] whitespace-pre-wrap leading-relaxed">${reportText}</div>
+      `;
+
+      document.getElementById('report-modal').classList.remove('hidden');
+    }
+
+    function closeReportModal() {
+      document.getElementById('report-modal').classList.add('hidden');
+    }
+
+    function copyReportText() {
+      const pre = document.querySelector('#report-modal-content div');
+      if (pre) {
+        const text = pre.innerText;
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        
+        const btn = event.target;
+        const oldText = btn.innerText;
+        btn.innerText = "✓ Đã sao chép vào bộ nhớ tạm!";
+        setTimeout(() => { btn.innerText = oldText; }, 2000);
+      }
+    }
+
+    /* =====================================================================
+       KHỞI TẠO ỨNG DỤNG
+       ===================================================================== */
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      renderDashboard();
+    });
+  </script>
+</body>
+</html>
